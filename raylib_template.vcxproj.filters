@@ -65,5 +65,14 @@
     <ClInclude Include="Source\Eye.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Segment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SecondOrderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

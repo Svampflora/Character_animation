@@ -23,6 +23,52 @@ static inline float GetRandomValueF(int min, int max) noexcept
 	return static_cast<float>(GetRandomValue(min, max));
 }
 
+inline Vector2 operator+(const Vector2& a, const Vector2& b)  noexcept
+{
+    return { a.x + b.x, a.y + b.y };
+}
+
+inline Vector2 operator += ( Vector2& a, const Vector2& b) noexcept
+{
+    a = a + b;
+    return a;
+
+}
+
+inline Vector2 operator-(const Vector2& a, const Vector2& b)  noexcept
+{
+    return { a.x - b.x, a.y - b.y };
+}
+
+inline Vector2 operator*(const Vector2& a, const Vector2& b) noexcept
+{
+    return { a.x * b.x, a.y * b.y };
+}
+
+inline Vector2 operator*(const Vector2& vec, float scalar) noexcept
+{
+    return { vec.x * scalar, vec.y * scalar };
+}
+
+inline Vector2 operator*(float scalar, const Vector2& vec) noexcept
+{
+    return { vec.x * scalar, vec.y * scalar };
+}
+
+inline Vector2 operator *= (Vector2& a, const Vector2& b) noexcept
+{
+    a = a * b;
+    return a;
+
+}
+
+inline Vector2 operator *= (Vector2& a, const float& b) noexcept
+{
+    a = a * b;
+    return a;
+
+}
+
 static inline void DrawCircleF(float centerX, float centerY, float radius, Color color ) noexcept
 {
 	DrawCircle(static_cast<int>(centerX), static_cast<int>(centerY), radius, color);
@@ -48,6 +94,16 @@ typedef struct Circle {
 	Vector2 center;
 	float radius;
 } Circle;
+
+static inline float half_chord_length(const Circle _circle, const float _distance) noexcept
+{
+    return sqrtf((_circle.radius * _circle.radius) - (_distance * _distance));
+}
+
+static constexpr inline float to_radians(float _degrees) noexcept
+{
+    return _degrees / 180 * PI;
+}
 
 static inline Vector2 UnitCircularOffset(Vector2 _vector) 
 {

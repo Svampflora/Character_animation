@@ -173,11 +173,14 @@
     <ClCompile Include="Source\Startscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Segment.h" />
     <ClInclude Include="Source\Eye.h" />
+    <ClInclude Include="Source\SecondOrderSystem.h" />
     <ClInclude Include="Source\Settings.h" />
     <ClInclude Include="Source\Endscreen.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\Gameplay.h" />
+    <ClInclude Include="Source\Shapes.h" />
     <ClInclude Include="Source\Startscreen.h" />
     <ClInclude Include="Source\State.h" />
     <ClInclude Include="Source\Resources.h" />
