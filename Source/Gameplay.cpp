@@ -34,7 +34,7 @@ std::unique_ptr<State> Play_screen::Update()
 				scale = 2.0f;
 			}
 
-			segment.update(position, rotation, scale);
+			segment.update(position, to_radians(rotation), scale);
 		}
 	}
 	return nullptr;

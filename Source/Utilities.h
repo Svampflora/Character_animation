@@ -32,7 +32,6 @@ inline Vector2 operator += ( Vector2& a, const Vector2& b) noexcept
 {
     a = a + b;
     return a;
-
 }
 
 inline Vector2 operator-(const Vector2& a, const Vector2& b)  noexcept
@@ -68,6 +67,16 @@ inline Vector2 operator *= (Vector2& a, const float& b) noexcept
     return a;
 
 }
+
+static inline Vector2 rotate_point(const Vector2& point, const float angle) noexcept
+{
+    return 
+    {
+        point.x * cosf(angle) - point.y * sinf(angle),
+        point.x * sinf(angle) + point.y * cosf(angle)
+    };
+}
+
 
 static inline void DrawCircleF(float centerX, float centerY, float radius, Color color ) noexcept
 {

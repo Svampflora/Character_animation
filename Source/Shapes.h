@@ -77,22 +77,35 @@ static inline std::vector<Vector2> epicycloid(const Circle _circle, const int _c
 	return fan;
 }
 
-static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2 _center, const float _scale, const float _angle) noexcept
+static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2& _position, const float _scale, const float _rotation) noexcept
 {
 	for (auto& point : _points)
 	{
-		float x = point.x - _center.x;
-		float y = point.y - _center.y;
-
-		x *= _scale;
-		y *= _scale;
-
-		const float rotated_x = x * cosf(_angle) - y * sinf(_angle);
-		const float rotated_y = x * sinf(_angle) + y * cosf(_angle);
-
-		point.x = _center.x + rotated_x;
-		point.y = _center.y + rotated_y;
+		point = (point - _position) * _scale;
+		point = rotate_point(point, _rotation);
+		point = _position + point;
 	}
 
 	return _points;
 }
+//
+//
+//static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2 _center, const float _scale, const float _angle) noexcept
+//{
+//	for (auto& point : _points)
+//	{
+//		float x = point.x - _center.x;
+//		float y = point.y - _center.y;
+//
+//		x *= _scale;
+//		y *= _scale;
+//
+//		const float rotated_x = x * cosf(_angle) - y * sinf(_angle);
+//		const float rotated_y = x * sinf(_angle) + y * cosf(_angle);
+//
+//		point.x = _center.x + rotated_x;
+//		point.y = _center.y + rotated_y;
+//	}
+//
+//	return _points;
+//}
