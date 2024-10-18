@@ -2,14 +2,47 @@
 #include <vector>
 #include "Utilities.h"
 
-static inline std::vector<Vector2> cat_pupil(const Circle _pupil, const float _shut_factor, const int _resolution)
+static inline std::vector<Vector2> eye_lid(const Circle& _eye, const float& _lid_shut_factor, const int& _resolution)
+{
+	const int points_per_circle = _resolution;
+	const float outer_radius = _eye.radius * 1.001f;
+
+	std::vector<Vector2> strip;
+
+	const float angle_increment = (2 * PI) / points_per_circle;
+
+	for (int i = 0; i <= points_per_circle; ++i)
+	{
+		const float angle = i * angle_increment;
+
+		const Vector2 outer_point =
+		{
+			_eye.center.x + outer_radius * cosf(angle),
+			_eye.center.y + outer_radius * sinf(angle)
+		};
+
+		const float inner_radius = half_chord_length(_eye, outer_point.x - _eye.center.x) * _lid_shut_factor;
+		const Vector2 inner_point =
+		{
+			_eye.center.x + outer_radius * cosf(angle),
+			_eye.center.y + inner_radius * sinf(angle)
+		};
+
+		strip.push_back(outer_point);
+		strip.push_back(inner_point);
+	}
+
+	return strip;
+}
+
+static inline std::vector<Vector2> cat_pupil(const Circle& _pupil, const float& _shut_factor, const int& _resolution)
 {
 	std::vector<Vector2> fan;
 	fan.reserve(_resolution);
 	fan.emplace_back(_pupil.center);
 	const float angle_increment = -(2 * PI) / (_resolution - 2);
 
-	for (size_t i = 1; i <= _resolution - 1; ++i) 
+	for (int i = 1; i <= _resolution - 1; ++i) 
 	{
 		const float angle = angle_increment * i;
 
@@ -24,7 +57,7 @@ static inline std::vector<Vector2> cat_pupil(const Circle _pupil, const float _s
  	return fan;
 }
 
-static inline std::vector<Vector2> crescent(const Circle _circle, const float _phase_factor, const int _resolution)
+static inline std::vector<Vector2> crescent(const Circle& _circle, const float& _phase_factor, const int& _resolution)
 {
 	std::vector<Vector2> strip;
 	strip.reserve(_resolution * 2);
@@ -42,7 +75,8 @@ static inline std::vector<Vector2> crescent(const Circle _circle, const float _p
 		};
 
 		const float thickness = half_chord_length(_circle, outer_point.x - _circle.center.x) * _phase_factor;
-		const Vector2 inner_point = {
+		const Vector2 inner_point = 
+		{
 			_circle.center.x + _circle.radius * cosf(angle),
 			_circle.center.y + thickness
 		};
@@ -54,7 +88,7 @@ static inline std::vector<Vector2> crescent(const Circle _circle, const float _p
 	return strip;
 }
 
-static inline std::vector<Vector2> epicycloid(const Circle _circle, const int _cusps, const int _resolution)
+static inline std::vector<Vector2> epicycloid(const Circle& _circle, const int& _cusps, const int& _resolution)
 {
 	std::vector<Vector2> fan;
 	fan.reserve(_resolution);
@@ -64,7 +98,7 @@ static inline std::vector<Vector2> epicycloid(const Circle _circle, const int _c
 	const float R = _circle.radius;
 	const float r = R / _cusps;
 
-	for (size_t i = 1; i < _resolution; ++i)
+	for (int i = 1; i < _resolution; ++i)
 	{
 		const float theta = angle_increment * i;
 
@@ -77,7 +111,7 @@ static inline std::vector<Vector2> epicycloid(const Circle _circle, const int _c
 	return fan;
 }
 
-static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2& _position, const float _scale, const float _rotation) noexcept
+static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2& _position, const float& _rotation, const float& _scale ) noexcept
 {
 	for (auto& point : _points)
 	{
@@ -88,24 +122,4 @@ static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points,
 
 	return _points;
 }
-//
-//
-//static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2 _center, const float _scale, const float _angle) noexcept
-//{
-//	for (auto& point : _points)
-//	{
-//		float x = point.x - _center.x;
-//		float y = point.y - _center.y;
-//
-//		x *= _scale;
-//		y *= _scale;
-//
-//		const float rotated_x = x * cosf(_angle) - y * sinf(_angle);
-//		const float rotated_y = x * sinf(_angle) + y * cosf(_angle);
-//
-//		point.x = _center.x + rotated_x;
-//		point.y = _center.y + rotated_y;
-//	}
-//
-//	return _points;
-//}
+

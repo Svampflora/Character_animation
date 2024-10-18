@@ -1,18 +1,16 @@
 #pragma once
 
-//#include <ranges>
-
 #include "State.h"
-#include "Resources.h"
-#include "Eye.h"
-#include "Segment.h"
+#include "Puppet.h"
+
 
 
 class Play_screen : public State
 {
-	Eye eye_1;
-	Segment segment;
+	//Eye eye_1;
+	//Segment segment;
 	Vector2 position;
+	std::vector<Face> face;
 
 public:
 	

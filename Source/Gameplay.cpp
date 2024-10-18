@@ -1,6 +1,19 @@
 #include "Gameplay.h"
 #include "Endscreen.h"
 
+
+[[gsl::suppress(f.6)]]
+Play_screen::Play_screen() :
+	position({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }),
+	face()
+{
+	const Eye left({ -GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
+	const Eye right({ GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
+	std::vector<Eye> eyes{ left, right };
+	Face a_face(eyes, 10.0f, 0.7f, position);
+	face.push_back(a_face);
+}
+
 std::unique_ptr<State> Play_screen::Update()
 {
 	if (IsKeyReleased(KEY_Q))
@@ -21,8 +34,7 @@ std::unique_ptr<State> Play_screen::Update()
 			const bool B = IsGamepadButtonDown(gamepad, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT);
 			const bool Y = IsGamepadButtonDown(gamepad, GAMEPAD_BUTTON_RIGHT_FACE_UP);
 
-			position = Vector2Add(position, right_stick);
-			eye_1.update({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }, left_stick, A);
+			position = Vector2Add(position, right_stick * 5);
 			float rotation = 0.0f;
 			float scale = 1.0f;
 			if (B)
@@ -34,24 +46,15 @@ std::unique_ptr<State> Play_screen::Update()
 				scale = 2.0f;
 			}
 
-			segment.update(position, to_radians(rotation), scale);
+			face.begin()->update(Segment::Input{position, to_radians(rotation), scale}, Eye::Input{left_stick, A});
 		}
 	}
 	return nullptr;
 }
 
-[[gsl::suppress(f.6)]]
-Play_screen::Play_screen() :
-	eye_1({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }, GetScreenWidthF() * 0.1f),
-	segment(10.0f, 0.7f, { GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }),
-	position({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f })
-{
-	
-}
-
 void Play_screen::Render() const noexcept
 {
-	eye_1.draw();
-	segment.draw(RED);
+	face.begin()->draw(RED);
+
 }
 

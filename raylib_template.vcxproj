@@ -166,6 +166,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Endscreen.cpp" />
+    <ClCompile Include="Source\Eye.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\Gameplay.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Source\Startscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Puppet.h" />
     <ClInclude Include="Source\Segment.h" />
     <ClInclude Include="Source\Eye.h" />
     <ClInclude Include="Source\SecondOrderSystem.h" />

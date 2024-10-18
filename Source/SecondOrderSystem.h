@@ -10,14 +10,14 @@ class SecondOrderSystem
 
 public:
     
-    SecondOrderSystem(const float natural_frequency, const float damping_ratio, T initial_value) noexcept :
+    SecondOrderSystem(const float& natural_frequency, const float& damping_ratio, const T& initial_value) noexcept :
         omega(natural_frequency), 
         zeta(damping_ratio), 
         value(initial_value), 
         velocity(T{})  // possible to add initial responce rate "r" = initial_velocity
     {}
 
-    void update(T target, float deltaTime) noexcept
+    void update(const T& target, const float& deltaTime) noexcept
     {
         T acceleration = omega * omega * (target - value) - 2 * zeta * omega * velocity;
 
