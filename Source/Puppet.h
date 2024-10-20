@@ -9,12 +9,12 @@ class Face : public Segment
 
 public:
 
-	Face(const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) noexcept :
-		Segment(natural_frequency, damping_ratio, _position, _rotation, _scale)
+	Face(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) noexcept :
+		Segment(_shape, natural_frequency, damping_ratio, _position, _rotation, _scale)
 	{};
 
-	Face(const std::vector<Eye>& _eyes, const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) : 
-		Segment(  natural_frequency, damping_ratio, _position, _rotation, _scale  ),
+	Face(const std::vector<Vector2>& _shape, const std::vector<Eye>& _eyes, const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) :
+		Segment(_shape, natural_frequency, damping_ratio, _position, _rotation, _scale  ),
 		eyes(_eyes)
 	{}
 
@@ -32,7 +32,7 @@ public:
 		Segment::draw(_color);
 		for (auto& eye : eyes)
 		{
-			eye.draw(_color, world_point(eye.local_offset()), rotation.get_value(), scale.get_value());
+			eye.draw(_color, world_point(eye.local_position()), rotation.get_value(), scale.get_value());
 		}
 	}
 };

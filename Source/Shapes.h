@@ -2,7 +2,7 @@
 #include <vector>
 #include "Utilities.h"
 
-static inline std::vector<Vector2> eye_lid(const Circle& _eye, const float& _lid_shut_factor, const int& _resolution)
+static inline std::vector<Vector2> eye_lids(const Circle& _eye, const float& _lid_shut_factor, const int& _resolution)
 {
 	const int points_per_circle = _resolution;
 	const float outer_radius = _eye.radius * 1.001f;
@@ -25,6 +25,36 @@ static inline std::vector<Vector2> eye_lid(const Circle& _eye, const float& _lid
 		const Vector2 inner_point =
 		{
 			_eye.center.x + outer_radius * cosf(angle),
+			_eye.center.y + inner_radius * sinf(angle)
+		};
+
+		strip.push_back(outer_point);
+		strip.push_back(inner_point);
+	}
+
+	return strip;
+}
+
+static inline std::vector<Vector2> eye_lid(const Circle& _eye, const float& _lid_shut_factor, const int& _resolution) noexcept
+{
+	std::vector<Vector2> strip;
+
+	const float angle_increment = (PI) / _resolution;
+
+	for (int i = 0; i <= _resolution; ++i)
+	{
+		const float angle = i * angle_increment;
+
+		const Vector2 outer_point =
+		{
+			_eye.center.x + _eye.radius * cosf(angle),
+			_eye.center.y + _eye.radius * sinf(angle)
+		};
+
+		const float inner_radius = half_chord_length(_eye, outer_point.x - _eye.center.x) * _lid_shut_factor;
+		const Vector2 inner_point =
+		{
+			_eye.center.x + _eye.radius * cosf(angle),
 			_eye.center.y + inner_radius * sinf(angle)
 		};
 
@@ -88,7 +118,7 @@ static inline std::vector<Vector2> crescent(const Circle& _circle, const float& 
 	return strip;
 }
 
-static inline std::vector<Vector2> epicycloid(const Circle& _circle, const int& _cusps, const int& _resolution)
+static inline std::vector<Vector2> epicycloid(const Circle& _circle, const int& _cusps, const int& _resolution) noexcept
 {
 	std::vector<Vector2> fan;
 	fan.reserve(_resolution);
@@ -111,15 +141,19 @@ static inline std::vector<Vector2> epicycloid(const Circle& _circle, const int& 
 	return fan;
 }
 
-static inline std::vector<Vector2> transform_shape(std::vector<Vector2> _points, const Vector2& _position, const float& _rotation, const float& _scale ) noexcept
+static inline std::vector<Vector2> transform_shape(const std::vector<Vector2>& _points, const Vector2& _position, float _rotation, float _scale) noexcept
 {
-	for (auto& point : _points)
+	std::vector<Vector2> transformed_points;
+	transformed_points.reserve(_points.size());
+
+	for (const auto& point : _points)
 	{
-		point = (point - _position) * _scale;
-		point = rotate_point(point, _rotation);
-		point = _position + point;
+		const Vector2 scaled_point = point * _scale;
+		const Vector2 rotated_point = rotate_point(scaled_point, _rotation);
+		transformed_points.emplace_back(rotated_point + _position);
 	}
 
-	return _points;
+	return transformed_points;
 }
+
 

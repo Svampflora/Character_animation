@@ -5,6 +5,7 @@
 
 class Segment 
 {
+    std::vector<Vector2> shape;
 protected:
     SecondOrderSystem<Vector2> position;
     SecondOrderSystem<float> rotation;
@@ -19,7 +20,9 @@ public://TODO: inject the SecondOrderSystems for more controll
         const float scale;
     };
 
-    Segment(const float natural_frequency, const float damping_ratio, const Vector2 _position, const float _rotation = 0.0f, const float _scale = 1.0f) noexcept : 
+    Segment(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, 
+                        const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) noexcept :
+        shape(_shape),
         position(natural_frequency, damping_ratio, _position),
         rotation(natural_frequency, damping_ratio, _rotation),
         scale(natural_frequency, damping_ratio, _scale)
@@ -42,16 +45,14 @@ public://TODO: inject the SecondOrderSystems for more controll
         position.update(input.position, delta_time);
         rotation.update(input.rotation, delta_time);
         scale.update(input.scale, delta_time);
+
     }
 
-    void draw(const Color& _color) const noexcept//TODO: inject fan shape
+    void draw(const Color& _color) const noexcept
     {
-        std::vector<Vector2> e = epicycloid({ position.get_value(), 100.0f }, 2, 64);
-        e = transform_shape(e, e.front(), rotation.get_value(), scale.get_value() );
-        DrawTriangleFan(e.data(), narrow_cast<int>(e.size()), _color);
+        std::vector<Vector2> drawable = transform_shape(shape, position.get_value(), rotation.get_value(), scale.get_value());
+        DrawTriangleFan(drawable.data(), narrow_cast<int>(drawable.size()), _color);
 
-        //DrawCircleV(world_point({ 0.0f, 50.0f }), scale.get_value(), GREEN);
-        //DrawTriangle(world_point({ 0.0f, 0.0f }), world_point({ -50.0f, 100.0f }), world_point({ 50.0f, 100.0f }), YELLOW);
     }
 };
 

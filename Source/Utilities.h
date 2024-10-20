@@ -104,6 +104,12 @@ typedef struct Circle {
 	float radius;
 } Circle;
 
+//typedef struct Transform {
+//    Vector2 position = {0.0f, 0.0f};
+//    float rotation = 0.0f;
+//    float scale = 1.0f;
+//} Transform;
+
 static inline float half_chord_length(const Circle _circle, const float _distance) noexcept
 {
     return sqrtf((_circle.radius * _circle.radius) - (_distance * _distance));

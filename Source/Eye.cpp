@@ -66,20 +66,21 @@ void Eye::update(const Input& _input)
 	}
 }
 
-void Eye::draw(const Color& _color, const Vector2& _position, const float& _rotation, const float& _scale) const
+void Eye::draw(const Color& _color, const Vector2& _position, const float& _rotation, const float& _scale) const noexcept
 {
-
-	const Circle eye{ _position, sclera.radius * _scale };
+	const Circle scaled_sclera{ _position, sclera.radius * _scale };
 	const Vector2 offset = Vector2Subtract(iris.center * _scale, sclera.center * _scale);
-	DrawCircleV(eye.center, eye.radius, WHITE);
-	DrawCircleV(Vector2Add(eye.center, offset), iris.radius * _scale, BLACK);
 
-	std::vector<Vector2> lid = eye_lid(eye, lid_factor, 64);
-	lid = transform_shape(lid, _position, _rotation, 1);
+	DrawCircleV(scaled_sclera.center, scaled_sclera.radius, WHITE);
+	DrawCircleV(Vector2Add(scaled_sclera.center, offset), iris.radius * _scale, BLACK);
+
+	std::vector<Vector2> lid = eye_lids(Circle{ {0.0f,0.0f},sclera.radius }, lid_factor, 64);
+	lid = transform_shape(lid, _position, _rotation, _scale);
 	DrawTriangleStrip(lid.data(), narrow_cast<int>(lid.size()), _color);
+
 }
 
-Vector2 Eye::local_offset() const noexcept
+Vector2 Eye::local_position() const noexcept
 {
 	return sclera.center;
 };

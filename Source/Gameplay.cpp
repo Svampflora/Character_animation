@@ -7,10 +7,12 @@ Play_screen::Play_screen() :
 	position({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }),
 	face()
 {
+	std::vector<Vector2> cardioid = epicycloid({ {0.0f,0.0f}, 1.0f}, 2, 64);
+	cardioid = transform_shape(cardioid, { 0.0f,0.0f }, 1.5f * PI, GetScreenWidthF() * 0.1f);
 	const Eye left({ -GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
 	const Eye right({ GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
 	std::vector<Eye> eyes{ left, right };
-	Face a_face(eyes, 10.0f, 0.7f, position);
+	Face a_face(cardioid, eyes, 10.0f, 0.7f, position);
 	face.push_back(a_face);
 }
 

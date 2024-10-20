@@ -7,8 +7,6 @@
 
 class Play_screen : public State
 {
-	//Eye eye_1;
-	//Segment segment;
 	Vector2 position;
 	std::vector<Face> face;
 

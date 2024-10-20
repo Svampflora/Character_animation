@@ -5,7 +5,6 @@
 
 class Eye
 {
-
 	Circle sclera;
 	Circle iris;
 	float lid_factor;
@@ -25,6 +24,6 @@ public:
 
 	Eye(const Vector2& _local_offset, const float& _size) noexcept;
 	void update(const Input& _input);
-	void draw(const Color& _color, const Vector2& _position, const float& _rotation, const float& _scale) const;
-	Vector2 local_offset() const noexcept;
+	void draw(const Color& _color, const Vector2& _position, const float& _rotation, const float& _scale) const noexcept;
+	Vector2 local_position() const noexcept;
 };
