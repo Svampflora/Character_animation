@@ -22,35 +22,23 @@ std::unique_ptr<State> Play_screen::Update()
 	{
 		return std::make_unique<End_screen>();
 	}
-	int gamepad = 0;
-	//raylib_example(gamepad);
-	if (IsGamepadAvailable(gamepad))
+
+	const GamePad gamepad(0);
+
+	position = Vector2Add(position, gamepad.right_stick * 5);
+	float rotation = 0.0f;
+	float scale = 1.0f;
+	if (gamepad.B)
 	{
-		DrawText(TextFormat("GP%d: %s", gamepad, GetGamepadName(gamepad)), 10, 10, 10, PINK);
-
-		if (TextIsEqual(GetGamepadName(gamepad), XBOX360_LEGACY_NAME_ID) || TextIsEqual(GetGamepadName(gamepad), XBOX360_NAME_ID))
-		{
-			const Vector2 right_stick = { GetGamepadAxisMovement(gamepad, GAMEPAD_AXIS_RIGHT_X), GetGamepadAxisMovement(gamepad, GAMEPAD_AXIS_RIGHT_Y) };
-			const Vector2 left_stick = { GetGamepadAxisMovement(gamepad, GAMEPAD_AXIS_LEFT_X), GetGamepadAxisMovement(gamepad, GAMEPAD_AXIS_LEFT_Y) };
-			const bool A = IsGamepadButtonDown(gamepad, GAMEPAD_BUTTON_RIGHT_FACE_DOWN);
-			const bool B = IsGamepadButtonDown(gamepad, GAMEPAD_BUTTON_RIGHT_FACE_RIGHT);
-			const bool Y = IsGamepadButtonDown(gamepad, GAMEPAD_BUTTON_RIGHT_FACE_UP);
-
-			position = Vector2Add(position, right_stick * 5);
-			float rotation = 0.0f;
-			float scale = 1.0f;
-			if (B)
-			{
-				rotation = 90.0f;
-			}
-			if (Y)
-			{
-				scale = 2.0f;
-			}
-
-			face.begin()->update(Segment::Input{position, to_radians(rotation), scale}, Eye::Input{left_stick, A});
-		}
+		rotation = 90.0f;
 	}
+	if (gamepad.Y)
+	{
+		scale = 2.0f;
+	}
+
+	face.begin()->update(Segment::Input{position, to_radians(rotation), scale}, Eye::Input{ gamepad.left_stick, gamepad.A});
+
 	return nullptr;
 }
 
