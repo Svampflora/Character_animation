@@ -39,7 +39,7 @@ public://TODO: inject the SecondOrderSystems for more controll
         return current_position + rotated;
     }
     
-    void update(const Input& input) noexcept
+    virtual void update(const Input& input) noexcept
     {
         const float delta_time = GetFrameTime();
         position.update(input.position, delta_time);
@@ -48,11 +48,13 @@ public://TODO: inject the SecondOrderSystems for more controll
 
     }
 
-    void draw(const Color& _color) const noexcept
+    virtual void draw(const Color& _color) const noexcept
     {
         std::vector<Vector2> drawable = transform_shape(shape, position.get_value(), rotation.get_value(), scale.get_value());
         DrawTriangleFan(drawable.data(), narrow_cast<int>(drawable.size()), _color);
 
     }
+
+    virtual ~Segment() = default;
 };
 

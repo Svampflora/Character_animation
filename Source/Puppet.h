@@ -18,6 +18,7 @@ public:
 		eyes(_eyes)
 	{}
 
+
 	void update(const Segment::Input& _segment_input, const Eye::Input& _eye_input)
 	{
 		for (auto& eye : eyes)
