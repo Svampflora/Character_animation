@@ -9,15 +9,10 @@ class Face : public Segment
 
 public:
 
-	Face(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) noexcept :
-		Segment(_shape, natural_frequency, damping_ratio, _position, _rotation, _scale)
-	{};
-
-	Face(const std::vector<Vector2>& _shape, const std::vector<Eye>& _eyes, const float& natural_frequency, const float& damping_ratio, const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) :
-		Segment(_shape, natural_frequency, damping_ratio, _position, _rotation, _scale  ),
+	Face(const std::vector<Vector2>& _shape, const std::vector<Eye>& _eyes, const float& natural_frequency, const float& damping_ratio, const Transform2D& _transform) :
+		Segment(_shape, natural_frequency, damping_ratio, _transform),
 		eyes(_eyes)
 	{}
-
 
 	void update(const Segment::Input& _segment_input, const Eye::Input& _eye_input)
 	{

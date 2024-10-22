@@ -20,12 +20,11 @@ public://TODO: inject the SecondOrderSystems for more controll
         const float scale;
     };
 
-    Segment(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, 
-                        const Vector2& _position, const float& _rotation = 0.0f, const float& _scale = 1.0f) noexcept :
+    Segment(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, const Transform2D& _transform) noexcept :
         shape(_shape),
-        position(natural_frequency, damping_ratio, _position),
-        rotation(natural_frequency, damping_ratio, _rotation),
-        scale(natural_frequency, damping_ratio, _scale)
+        position(natural_frequency, damping_ratio, _transform.position),
+        rotation(natural_frequency, damping_ratio, _transform.rotation),
+        scale(natural_frequency, damping_ratio, _transform.scale)
     {}
 
     Vector2 world_point(const Vector2& local_point) const noexcept

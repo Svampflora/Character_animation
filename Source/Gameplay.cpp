@@ -12,7 +12,7 @@ Play_screen::Play_screen() :
 	const Eye left({ -GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
 	const Eye right({ GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
 	std::vector<Eye> eyes{ left, right };
-	Face a_face(cardioid, eyes, 10.0f, 0.7f, position);
+	Face a_face(cardioid, eyes, 10.0f, 0.7f, Transform2D{ position });
 	face.push_back(a_face);
 }
 

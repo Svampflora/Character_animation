@@ -104,11 +104,11 @@ typedef struct Circle {
 	float radius;
 } Circle;
 
-//typedef struct Transform {
-//    Vector2 position = {0.0f, 0.0f};
-//    float rotation = 0.0f;
-//    float scale = 1.0f;
-//} Transform;
+typedef struct Transform2D {
+    Vector2 position = {0.0f, 0.0f};
+    float rotation = 0.0f;
+    float scale = 1.0f;
+} Transform2D;
 
 static inline float half_chord_length(const Circle _circle, const float _distance) noexcept
 {
