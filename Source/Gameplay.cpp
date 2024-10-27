@@ -17,6 +17,7 @@ Play_screen::Play_screen() :
 	Face a_face(cardioid, eyes, 10.0f, 0.7f, Transform2D{ position });
 	face.push_back(a_face);
 
+
 	std::vector<Segment> segs;
 	segs.reserve(3);
 	for (int i = 0; i < 3; i++)
