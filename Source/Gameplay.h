@@ -2,6 +2,7 @@
 
 #include "State.h"
 #include "Puppet.h"
+#include "Leg.h"
 
 
 
@@ -9,6 +10,7 @@ class Play_screen : public State
 {
 	Vector2 position;
 	std::vector<Face> face;
+	std::vector<Leg> legs;
 
 public:
 	

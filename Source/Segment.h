@@ -2,6 +2,7 @@
 #include "Shapes.h"
 #include "SecondOrderSystem.h"
 #include <vector>
+#include <optional>
 
 class Segment 
 {
@@ -15,9 +16,9 @@ public://TODO: inject the SecondOrderSystems for more controll
 
     struct Input
     {
-        const Vector2 position;
-        const float rotation;
-        const float scale;
+        std::optional<Vector2> position;
+        std::optional<float> rotation;
+        std::optional<float> scale;
     };
 
     Segment(const std::vector<Vector2>& _shape, const float& natural_frequency, const float& damping_ratio, const Transform2D& _transform) noexcept :
@@ -37,14 +38,30 @@ public://TODO: inject the SecondOrderSystems for more controll
         const Vector2 rotated = rotate_point(transformed_point, current_rotation);
         return current_position + rotated;
     }
+
+    Transform2D get_values() const noexcept
+    {
+        return { position.get_value(), rotation.get_value(), scale.get_value() };
+    }
     
     virtual void update(const Input& input) noexcept
     {
         const float delta_time = GetFrameTime();
-        position.update(input.position, delta_time);
-        rotation.update(input.rotation, delta_time);
-        scale.update(input.scale, delta_time);
 
+        if (input.position.has_value()) 
+        {
+            position.update(input.position.value(), delta_time);
+        }
+
+        if (input.rotation.has_value()) 
+        {
+            rotation.update(input.rotation.value(), delta_time);
+        }
+
+        if (input.scale.has_value()) 
+        {
+            scale.update(input.scale.value(), delta_time);
+        }
     }
 
     virtual void draw(const Color& _color) const noexcept
@@ -52,6 +69,17 @@ public://TODO: inject the SecondOrderSystems for more controll
         std::vector<Vector2> drawable = transform_shape(shape, position.get_value(), rotation.get_value(), scale.get_value());
         DrawTriangleFan(drawable.data(), narrow_cast<int>(drawable.size()), _color);
 
+    }
+
+    void visualize() const noexcept
+    {
+        DrawCircleLines(narrow_cast<int>(position.get_value().x), narrow_cast<int>(position.get_value().y), scale.get_value(), GREEN);
+        const Vector2 outer_point =
+        {
+            position.get_value().x + scale.get_value() * cosf(rotation.get_value()),
+            position.get_value().y + scale.get_value() * sinf(rotation.get_value())
+        };
+        DrawLineV(position.get_value(), outer_point, GREEN);
     }
 
     virtual ~Segment() = default;
