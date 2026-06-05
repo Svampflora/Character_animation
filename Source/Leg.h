@@ -102,7 +102,7 @@ public:
         //DrawLineV(base_position, tip_position, YELLOW);
         for (auto it = segments.begin(); it != segments.end(); ++it)
         {
-            //it->visualize();
+            it->visualize();
             if (it == segments.begin())
             {
                 points_to_next = intersections({ it->get_values().position, it->get_values().scale }, { (it + 1)->get_values().position, (it + 1)->get_values().scale });

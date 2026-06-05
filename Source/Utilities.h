@@ -201,10 +201,10 @@ typedef struct GamePad
 
             //GetGamepadButtonPressed() != GAMEPAD_BUTTON_UNKNOWN
         }
-        else
-        {
-            throw;
-        }
+        //else
+        //{
+        //    throw;
+        //}
     }
 
 } Controller;

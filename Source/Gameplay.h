@@ -10,7 +10,6 @@ class Play_screen : public State
 {
 	Vector2 position;
 	std::vector<Face> face;
-	std::vector<Leg> legs;
 
 public:
 	
