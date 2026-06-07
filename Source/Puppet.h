@@ -17,7 +17,7 @@ class Point_volume
 private:
 	std::vector<Point> points;
 public:
-	void load_slices(const std::vector<std::string>& files,	float voxel_size = 1.0f,	uint8_t alpha_threshold = 10)
+	void Load_slices(const std::vector<std::string>& files,	float voxel_size = 1.0f,	uint8_t alpha_threshold = 10)
 	{
 		points.clear();
 
@@ -157,47 +157,42 @@ public:
 				VOXEL_SIZE,
 				p.color);
 		}
-		//float pointSize = 16.0f;
-
-		//BeginShaderMode(m_shader);
-		//rlBegin(RL_QUADS);
-
-		//rlColor4ub(255, 0, 0, 255);
-
-		//rlVertex3f(-10, -10, 0);
-		//rlVertex3f(10, -10, 0);
-		//rlVertex3f(10, 10, 0);
-		//rlVertex3f(-10, 10, 0);
-		//
-
-
-		////for (const auto& p : points)
-		////{
-		////	Vector3 r = Vector3Scale(right, pointSize);
-		//	//Vector3 u = Vector3Scale(up, pointSize);
-
-		////	Vector3 v0 = Vector3Subtract(Vector3Subtract(p.position, r), u);
-		////	Vector3 v1 = Vector3Add(Vector3Subtract(p.position, u), r);
-		////	Vector3 v2 = Vector3Add(Vector3Add(p.position, r), u);
-		////	Vector3 v3 = Vector3Add(Vector3Subtract(p.position, r), u);
-
-		////	rlColor4ub(
-		////		p.color.r,
-		////		p.color.g,
-		////		p.color.b,
-		////		p.color.a);
-
-		////	rlVertex3f(v0.x, v0.y, v0.z);
-		////	rlVertex3f(v1.x, v1.y, v1.z);
-		////	rlVertex3f(v2.x, v2.y, v2.z);
-		////	rlVertex3f(v3.x, v3.y, v3.z);
-		////}
-		//rlEnd();
-
-		//EndShaderMode();
 	}
 };
 
+
+class Actor
+{
+private:
+	Point_volume point_volume;
+	PointCloudRenderer renderer;
+public:
+
+	Vector3 position{ Vector3Zero() };
+
+	Actor(): renderer(LoadShader("shaders/points.vs", "shaders/points.fs"))
+	{
+		Load_slices();
+	}
+
+	void Load_slices()
+	{
+		point_volume.Load_slices(
+			{
+			"assets/slices/0.png",
+			"assets/slices/1.png",
+			"assets/slices/2.png",
+			"assets/slices/3.png",
+			"assets/slices/4.png"
+			}, VOXEL_SIZE);
+	};
+
+	void Draw(const Camera& camera) const noexcept
+	{
+		renderer.Draw(point_volume.Points(), camera);
+	}
+
+};
 //class Insect
 //{
 //protected:

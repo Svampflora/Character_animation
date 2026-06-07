@@ -165,6 +165,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Camera_controller.cpp" />
     <ClCompile Include="Source\Endscreen.cpp" />
     <ClCompile Include="Source\Eye.cpp" />
     <ClCompile Include="Source\Game.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Source\Startscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Camera_controller.h" />
     <ClInclude Include="Source\Leg.h" />
     <ClInclude Include="Source\Puppet.h" />
     <ClInclude Include="Source\Segment.h" />
