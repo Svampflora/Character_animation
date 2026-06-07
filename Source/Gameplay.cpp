@@ -4,17 +4,26 @@
 
 [[gsl::suppress(f.6)]]
 Play_screen::Play_screen() :
-	position({ GetScreenWidthF() * 0.5f, GetScreenHeightF() * 0.5f }),
-	face()	
-{
-	std::vector<Vector2> cardioid = epicycloid({ {0.0f,0.0f}, 1.0f}, 2, 64);
-	cardioid = transform_shape(cardioid, { 0.0f,0.0f }, 1.5f * PI, GetScreenWidthF() * 0.1f);
-	const Eye left({ -GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
-	const Eye right({ GetScreenWidthF() * 0.05f, 0.0f }, GetScreenWidthF() * 0.05f);
-	std::vector<Eye> eyes{ left, right };
-	Face a_face(cardioid, eyes, 10.0f, 0.7f, Transform2D{ position });
-	face.push_back(a_face);
 
+	camera{},
+	point_volume(),
+	mesh(),
+	renderer(LoadShader("shaders/points.vs", "shaders/points.fs"))
+{
+
+	camera.position = { 10.0f, 10.0f, 15.0f };
+	camera.target = { 0.0f, 0.0f,  0.0f };
+	camera.up = { 0.0f, 1.0f, 0.0f };
+	camera.fovy = 45.0f;
+	camera.projection = CAMERA_PERSPECTIVE;
+
+	point_volume.load_slices({
+	"assets/slices/0.png",
+	"assets/slices/1.png",
+	"assets/slices/2.png",
+	"assets/slices/3.png",
+	"assets/slices/4.png"
+		}, VOXEL_SIZE);
 }
 
 std::unique_ptr<State> Play_screen::Update()
@@ -24,28 +33,43 @@ std::unique_ptr<State> Play_screen::Update()
 		return std::make_unique<End_screen>();
 	}
 
-	const GamePad gamepad(0);
+	const Gamepad gamepad(0);
 
-	position = Vector2Add(position, gamepad.right_stick * 5);
-	float rotation = 0.0f;
-	float scale = 1.0f;
-	if (gamepad.B)
-	{
-		rotation = 90.0f;
-	}
-	if (gamepad.Y)
-	{
-		scale = 2.0f;
-	}
-
-	face.begin()->update(Segment::Input{position, to_radians(rotation), scale}, Eye::Input{ gamepad.left_stick, gamepad.A});
+	//insect.update(gamepad);
 
 	return nullptr;
 }
 
 void Play_screen::Render() const noexcept
 {
-	face.begin()->draw(RED);
 
+	Vector3 forward =
+		Vector3Normalize(
+			Vector3Subtract(
+				camera.target,
+				camera.position));
+
+	Vector3 right =
+		Vector3Normalize(
+			Vector3CrossProduct(
+				forward,
+				camera.up));
+
+
+
+	Vector3 up =
+		Vector3Normalize(
+			Vector3CrossProduct(
+				right,
+				forward));
+
+	BeginMode3D(camera);
+
+	DrawGrid(20, 10.0f);
+
+
+	renderer.Draw(point_volume.Points(), camera);
+
+	EndMode3D();
 }
 

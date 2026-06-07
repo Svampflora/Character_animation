@@ -190,6 +190,10 @@
     <ClInclude Include="Source\Utilities.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\points.fs" />
+    <None Include="Shaders\points.vs" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

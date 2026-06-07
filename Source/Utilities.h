@@ -8,6 +8,10 @@
 #pragma warning(pop)
 #include <utility>
 
+[[nodiscard]] constexpr inline float half_of(float whole) noexcept {
+    return 0.5f * whole;
+}
+
 static inline float GetScreenWidthF() noexcept
 {
 	return static_cast<float>(GetScreenWidth());
@@ -94,10 +98,12 @@ inline T narrow_cast(U&& u) noexcept
 	return static_cast<T>(std::forward<U>(u));
 }
 
-typedef struct Vector2i {
+typedef Vector2 vec2;
+
+typedef struct vec2i {
 	int x;                
 	int y;                
-} Vector2i;
+} vec2i;
 
 typedef struct Circle {
 	Vector2 center;
@@ -145,7 +151,7 @@ static inline bool Vector2Same(Vector2 v1, Vector2 v2) noexcept
 #define XBOX360_NAME_ID     "Xbox 360 Controller"
 #define PS3_NAME_ID         "Sony PLAYSTATION(R)3 Controller"
 
-typedef struct GamePad 
+typedef struct Gamepad 
 {
     Vector2 right_stick{0.0f, 0.0f};
     Vector2 left_stick{ 0.0f, 0.0f };
@@ -168,7 +174,7 @@ typedef struct GamePad
     bool right_shoulder{ 0.0f };
 
 
-    GamePad(const int gamepad_nr)
+    Gamepad(const int gamepad_nr)
     {
         if (IsGamepadAvailable(gamepad_nr))
         {

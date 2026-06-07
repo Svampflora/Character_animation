@@ -8,7 +8,7 @@
 class Game
 {
 	Window window{ "Skuggor", SCREEN_WIDTH, SCREEN_HEIGHT };
-	std::unique_ptr<State> current_state = std::make_unique<Start_screen>();
+	std::unique_ptr<State> current_state = std::make_unique<Play_screen>();
 
 public:
 	void Update();

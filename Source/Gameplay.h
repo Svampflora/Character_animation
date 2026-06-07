@@ -6,10 +6,15 @@
 
 
 
+
 class Play_screen : public State
 {
-	Vector2 position;
-	std::vector<Face> face;
+	Camera3D			camera;
+	Point_volume		point_volume;
+	PointCloudMesh		mesh;
+	PointCloudRenderer	renderer;
+	//Vector2 position;
+	//std::vector<Face> face;
 
 public:
 	
